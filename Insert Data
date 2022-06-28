@@ -1,0 +1,133 @@
+-- Mohamed Al Balushi, COMP440, Final Project, Part 2/2
+
+
+
+-- CREATING TABLES: 
+CREATE TABLE Product (
+Product_ID INT PRIMARY KEY IDENTITY(1,1), Product_Title varchar(100) NULL, Product_Description TEXT NULL,
+);
+
+
+CREATE TABLE  Release ( Release_ID INT PRIMARY KEY IDENTITY(1,1), 
+Product_ID INT FOREIGN KEY REFERENCES Product(Product_ID) NULL, Release_Number VARCHAR (50) NOT NULL, Release_Date DATE NULL,
+);
+
+
+CREATE TABLE Version (
+Version_ID INT PRIMARY KEY IDENTITY(1,1) , Release_ID INT FOREIGN KEY REFERENCES Release(Release_ID) NULL, Version_Number VARCHAR (50),
+);
+
+
+
+CREATE TABLE WorkItem (
+WorkItem_ID INT PRIMARY KEY IDENTITY(1,1),  
+WorkItem_Parent INT FOREIGN KEY REFERENCES WorkItem(WorkItem_ID) NULL, 
+Version_ID INT FOREIGN KEY REFERENCES Version(Version_ID) NULL,
+WorkItem_Type varchar(100) NULL,
+WorkItem_Title varchar(100) NULL,
+WorkItem_Description TEXT NULL,
+WorkItem_Activity VARCHAR(100) NULL,
+WorkItem_CreatedDate DATE NULL,
+WorkItem_SystemOfOrigin VARCHAR (100) NULL,
+WorkItem_Creator VARCHAR(100) NULL,
+WorkItem_RecordedDate DATE NULL,
+);
+
+
+-- Combing Data
+
+INSERT Product (Product_Title, Product_Description)
+VALUES ('BestProduct', 'Best Product description....');
+
+SELECT * FROM Product
+
+INSERT Release(Release_Number, Release_Date)
+SELECT DISTINCT release_number,release_date FROM TestingData WHERE release_date is not null;
+
+UPDATE Release
+SET Product_ID = 1
+
+SELECT * FROM Release;
+
+INSERT Version (Version_Number)
+SELECT DISTINCT software_Version FROM TestingData;
+
+UPDATE Version
+SET Release_ID = 1
+WHERE Version_ID <= 2;
+
+UPDATE Version
+SET Release_ID = 2
+WHERE Version_ID >= 3;
+
+SELECT * FROM Version;
+
+INSERT WorkItem (WorkItem_ID, WorkItem_Type, WorkItem_Parent, WorkItem_Title, WorkItem_Description, WorkItem_Activity, WorkItem_CreatedDate,WorkItem_SystemOfOrigin, WorkItem_Creator,WorkItem_RecordedDate)
+SELECT DISTINCT ID,Work_Item_Type,Belongs_to,Title, Description,Activity,created_date,System_of_Origin,Created_Reported_by,RecordedDate FROM TestingData;
+
+
+UPDATE WorkItem
+SET Version_ID = 1
+WHERE WorkItem_ID < 18-- Mohamed Al Balushi, COMP440, Final Project, Part 1/2
+CREATE TABLE TestingData (
+    [ID] INT, [Work_Item_Type] NVARCHAR(30),[Belongs_to] INT,  [Title] NVARCHAR(100), [Description] NVARCHAR(2500), [Activity] NVARCHAR(60),  [created_date] DATETIME, [System_of_Origin] NVARCHAR(35), [Created_Reported_by] NVARCHAR(50),
+    [RecordedDate] NVARCHAR(30), [release_number] NVARCHAR(20),  [release_date] DATETIME,  [notification_date] DATETIME,  [software_Version] NVARCHAR(20)
+);
+INSERT INTO TestingData VALUES
+    (1,'Feature',NULL,'WebSite Content','Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas eget elit lobortis, viverra lorem et, elementum nibh. Aenean scelerisque nulla sed quam aliquam, ut volutpat eros lacinia. Phasellus fringilla lectus lectus, in eleifend nulla condimentum et. Donec feugiat ornare libero, ac laoreet ipsum tincidunt sit amet. Curabitur blandit scelerisque malesuada. Praesent quis tortor orci. Nullam vitae elementum orci. Aenean sodales leo turpis, at rhoncus lacus facilisis ut. Praesent a magna vitae magna suscipit aliquet. Cras quis nisi vitae neque tempus consectetur. Curabitur dolor velit, facilisis faucibus arcu nec, elementum tempus arcu. Donec non dui finibus, luctus neque vel, vehicula nulla. Sed feugiat est ligula, id luctus nunc convallis sit amet.','Development','2018-12-09 00:00:00','TFS','HH',NULL,'1.1.8',NULL,NULL,'1.1.8.1'),
+    (4,'User Story',1,'Current layout needs change to the new look','orem ipsum dolor sit amet, consectetur adipiscing elit. Etiam condimentum odio sed mi vehicula consequat. ngue, sit amet mattis ex porta.','Development','2018-01-01 00:00:00','TFS','HH','2017-12-25 00:00:00','1.1.8','2018-02-02 00:00:00','2018-01-30 00:00:00','1.1.8.1'),
+    (5,'Task',4,'Change the website CSS file to implement colors, fonts, logo, and layout','orem ipsum dolor sit amet, consectetur adipiscing elit. Etiam condimentum odio sed mi vehicula consequat. Nulla condimentum neque id convallis bibendum.  vehicula auctor. Morbi mattis, tortor in rutrum faucibus, felis quam interdum ipsum, eu molestie ante dolor et leo. Nullam fringilla vel nisi non tincidunt. Praesent commodo, nunc ac venenatis consectetur, nunc massa tristique risus, ut ultrices tellus nunc at augue. Suspendisse potenti. Suspendisse potenti. Quisque ac nisi finibus, volutpat lacus eget, faucibus nisl. Quisque sed nunc risus. Etiam ultrices varius interdum.Mauris sed commodo orci. Nunc nulla turpis, lobortis sed tortor vitae, mollis fermentum eros. Ut laoreet facilisis purus non commodo. Vivamus mattis eros sodales rhoncus scelerisque. Fusce laoreet sapien sed nibh ornare blandit. Aliquam vulputate vulputate mauris id molestie. Pellentesque eget risus pulvinar, iaculis nisl aliquet, ornare nisi. Mauris porttitor ipsum a turpis fringilla, sit amet interdum nisl gravida. Nam cursus elementum tellus, nec rutrum dui malesuada id. Vestibulum interdum gravida eros, sed vestibulum diam convallis accumsan. Nullam porttitor nibh id est congue, sit amet mattis ex porta.','Development','2018-01-01 00:00:00','TFS','HH','2017-12-25 00:00:00','1.1.8','2018-02-02 00:00:00','2018-01-30 00:00:00','1.1.8.1'),
+    (6,'Task',4,'Add Submenues to the website','Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ut orci scelerisque, viverra purus sed, ultrices mauris. Vestibulum imperdiet vitae libero eu ornare. Interdum et malesuada fames ac ante ipsum primis in faucibus. Maecenas tincidunt gravida est ut feugiat. Nulla magna magna, posuere non risus vel, aliquam lacinia felis. Phasellus eu augue id enim feugiat eleifend. Duis sit amet ligula imperdiet, euismod felis in, placerat risus. Duis ultrices magna eget ultrices viverra.','Development','2018-01-01 00:00:00','TFS','HH','2017-11-22 00:00:00','1.1.8','2018-02-02 00:00:00','2018-01-30 00:00:00','1.1.8.1'),
+    (7,'Task',4,'add Main xxx Page Text','Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Suspendisse ultrices molestie est, eu tempus orci gravida ac. Ut augue felis, interdum at nulla congue, mattis eleifend orci. Donec lobortis, ex a ornare placerat, erat tellus iaculis justo, nec vestibulum sem tellus placerat ipsum. Morbi tincidunt quam ac aliquet ultrices. Sed interdum eros quis ligula sollicitudin gravida. Aliquam suscipit quam id iaculis varius. Phasellus dictum odio in pulvinar volutpat. Praesent et imperdiet nunc. Aliquam quis aliquam magna. Nunc sollicitudin, turpis eget mattis semper, justo nulla hendrerit felis, consectetur imperdiet ipsum massa ac lectus. Suspendisse nibh ipsum, tincidunt id augue mollis, lacinia vestibulum neque. In ullamcorper dui in nisl tempor pulvinar. Mauris non scelerisque tellus.','Development','2018-01-01 00:00:00','TFS','HH','2017-11-23 00:00:00','1.1.8','2018-02-02 00:00:00','2018-01-30 00:00:00','1.1.8.1'),
+    (8,'Bug',4,'Fix Sitemap','Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ut orci scelerisque, viverra purus sed, ultrices mauris. Vestibulum imperdiet vitae libero eu ornare. Interdum et malesuada fames ac ante ipsum primis in faucibus. Maecenas tincidunt gravida est ut feugiat. Nulla magna magna, posuere non risus vel, aliquam lacinia felis. Phasellus eu augue id enim feugiat eleifend. Duis sit amet ligula imperdiet, euismod felis in, placerat risus. Duis ultrices magna eget ultrices viverra.','Support','2018-01-01 00:00:00','SupportSystem','Client1','2017-12-02 00:00:00','1.1.8','2018-02-02 00:00:00','2018-01-30 00:00:00','1.1.8.1'),
+    (16,'Bug',4,'Web Site, Training Center: create a sub menu for the demo','Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas eget elit lobortis, viverra lorem et, elementum nibh. Aenean scelerisque nulla sed quam aliquam, ut volutpat eros lacinia. Phasellus fringilla lectus lectus, in eleifend nulla condimentum et. Donec feugiat ornare libero, ac laoreet ipsum tincidunt sit amet. Curabitur blandit scelerisque malesuada. Praesent quis tortor orci. Nullam vitae elementum orci. Aenean sodales leo turpis, at rhoncus lacus facilisis ut. Praesent a magna vitae magna suscipit aliquet. Cras quis nisi vitae neque tempus consectetur. Curabitur dolor velit, facilisis faucibus arcu nec, elementum tempus arcu. Donec non dui finibus, luctus neque vel, vehicula nulla. Sed feugiat est ligula, id luctus nunc convallis sit amet.','Support','2018-01-01 00:00:00','SupportSystem','Client1','2017-12-03 00:00:00','1.1.8','2018-02-02 00:00:00','2018-01-30 00:00:00','1.1.8.1'),
+    (17,'Bug',4,'Web Site, Training Center: do an error catching','In vehicula magna dignissim arcu laoreet imperdiet. Aenean bibendum et quam vitae finibus. Proin eu augue elit. Vestibulum iaculis libero est, at vulputate augue ultricies eu. Morbi ultrices viverra rhoncus. Integer eget urna vel dui tincidunt iaculis euismod nec metus. Phasellus ornare lectus quis quam porta, nec iaculis eros aliquam. Cras sed magna mollis risus tristique vulputate quis non dui. Proin sed facilisis enim. Pellentesque facilisis, felis et elementum ultricies, ex eros dignissim ipsum, et gravida dolor urna at tortor. Fusce tincidunt pulvinar nisl in consectetur. Mauris ac vulputate magna. Sed finibus at nisl pretium mollis. In neque nisl, varius egestas enim vel, maximus rhoncus metus.','Development','2018-01-09 00:00:00','TFS','HH',NULL,'1.1.8','2018-02-02 00:00:00','2018-01-30 00:00:00','1.1.8.1'),
+    (27,'Feature',NULL,'WebSite Graphics and Layout','Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas eget elit lobortis, viverra lorem et, elementum nibh. Aenean scelerisque nulla sed quam aliquam, ut volutpat eros lacinia. Phasellus fringilla lectus lectus, in eleifend nulla condimentum et. Donec feugiat ornare libero, ac laoreet ipsum tincidunt sit amet. Curabitur blandit scelerisque malesuada. Praesent quis tortor orci. Nullam vitae elementum orci. Aenean sodales leo turpis, at rhoncus lacus facilisis ut. Praesent a magna vitae magna suscipit aliquet. Cras quis nisi vitae neque tempus consectetur. Curabitur dolor velit, facilisis faucibus arcu nec, elementum tempus arcu. Donec non dui finibus, luctus neque vel, vehicula nulla. Sed feugiat est ligula, id luctus nunc convallis sit amet.','Development','2018-01-09 00:00:00','TFS','HH',NULL,'1.1.8',NULL,NULL,'1.1.8.2'),
+    (250,'User Story',27,'Preparing Site for New xxxxxs Promotio','Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas eget elit lobortis, viverra lorem et, elementum nibh. Aenean scelerisque nulla sed quam aliquam, ut volutpat eros lacinia. Phasellus fringilla lectus lectus, in eleifend nulla condimentum et. Donec feugiat ornare libero, ac laoreet ipsum tincidunt sit amet. Curabitur blandit scelerisque malesuada. Praesent quis tortor orci. Nullam vitae elementum orci. Aenean sodales leo turpis, at rhoncus lacus facilisis ut. Praesent a magna vitae magna suscipit aliquet. Cras quis nisi vitae neque tempus consectetur. Curabitur dolor velit, facilisis faucibus arcu nec, elementum tempus arcu. Donec non dui finibus, luctus neque vel, vehicula nulla. Sed feugiat est ligula, id luctus nunc convallis sit amet.','Support','2018-01-09 00:00:00','TFS','HH',NULL,'1.1.8',NULL,NULL,'1.1.8.2'),
+    (251,'Task',250,'Split the page','In vehicula magna dignissim arcu laoreet imperdiet. Aenean bibendum et quam vitae finibus. Proin eu augue elit. Vestibulum iaculis libero est, at vulputate augue ultricies eu. Morbi ultrices viverra rhoncus. Integer eget urna vel dui tincidunt iaculis euismod nec metus. Phasellus ornare lectus quis quam porta, nec iaculis eros aliquam. Cras sed magna mollis risus tristique vulputate quis non dui. Proin sed facilisis enim. Pellentesque facilisis, felis et elementum ultricies, ex eros dignissim ipsum, et gravida dolor urna at tortor. Fusce tincidunt pulvinar nisl in consectetur. Mauris ac vulputate magna. Sed finibus at nisl pretium mollis. In neque nisl, varius egestas enim vel, maximus rhoncus metus.','Support','2018-01-09 00:00:00','TFS','HH',NULL,'1.1.8',NULL,NULL,'1.1.8.2'),
+    (254,'Task',250,'Change the Flier','In vehicula magna dignissim arcu laoreet imperdiet. Aenean bibendum et quam vitae finibus. Proin eu augue elit. Vestibulum iaculis libero est, at vulputate augue ultricies eu. Morbi ultrices viverra rhoncus. Integer eget urna vel dui tincidunt iaculis euismod nec metus. Phasellus ornare lectus quis quam porta, nec iaculis eros aliquam. Cras sed magna mollis risus tristique vulputate quis non dui. Proin sed facilisis enim. Pellentesque facilisis, felis et elementum ultricies, ex eros dignissim ipsum, et gravida dolor urna at tortor. Fusce tincidunt pulvinar nisl in consectetur. Mauris ac vulputate magna. Sed finibus at nisl pretium mollis. In neque nisl, varius egestas enim vel, maximus rhoncus metus.','Development','2018-01-09 00:00:00','TFS','HH',NULL,'1.1.8',NULL,NULL,'1.1.8.2'),
+    (255,'Task',250,'Testing Quote request','Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas eget elit lobortis, viverra lorem et, elementum nibh. Aenean scelerisque nulla sed quam aliquam, ut volutpat eros lacinia. Phasellus fringilla lectus lectus, in eleifend nulla condimentum et. Donec feugiat ornare libero, ac laoreet ipsum tincidunt sit amet. Curabitur blandit scelerisque malesuada. Praesent quis tortor orci. Nullam vitae elementum orci. Aenean sodales leo turpis, at rhoncus lacus facilisis ut. Praesent a magna vitae magna suscipit aliquet. Cras quis nisi vitae neque tempus consectetur. Curabitur dolor velit, facilisis faucibus arcu nec, elementum tempus arcu. Donec non dui finibus, luctus neque vel, vehicula nulla. Sed feugiat est ligula, id luctus nunc convallis sit amet.','Development','2018-01-09 00:00:00','TFS','HH',NULL,'1.1.8',NULL,NULL,'1.1.8.2'),
+    (256,'Task',250,'Testing Trial Request','request menu','Development','2018-01-09 00:00:00','TFS','HH',NULL,'1.1.8',NULL,NULL,'1.1.8.2'),
+    (259,'User Story',NULL,'Bugs from Prior Development',NULL,'Development','2018-01-09 00:00:00','SupportSystem','Client2','2018-12-11 00:00:00','1.1.9','2018-02-22 00:00:00','2018-02-15 00:00:00','1.1.9.1'),
+    (260,'Bug',259,'Selected Menu Item Does Not Change Color',NULL,'Support','2018-01-09 00:00:00','SupportSystem','Client2','2018-12-12 00:00:00','1.1.9','2018-02-22 00:00:00','2018-02-15 00:00:00','1.1.9.1'),
+    (261,'Bug',259,'Hints under the menu items','Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas eget elit lobortis, viverra lorem et, elementum nibh. Aenean scelerisque nulla sed quam aliquam, ut volutpat eros lacinia. Phasellus fringilla lectus lectus, in eleifend nulla condimentum et. Donec feugiat ornare libero, ac laoreet ipsum tincidunt sit amet. Curabitur blandit scelerisque malesuada. Praesent quis tortor orci. Nullam vitae elementum orci. Aenean sodales leo turpis, at rhoncus lacus facilisis ut. Praesent a magna vitae magna suscipit aliquet. Cras quis nisi vitae neque tempus consectetur. Curabitur dolor velit, facilisis faucibus arcu nec, elementum tempus arcu. Donec non dui finibus, luctus neque vel, vehicula nulla. Sed feugiat est ligula, id luctus nunc convallis sit amet.','Support','2018-01-09 00:00:00','SupportSystem','Client2','2018-12-11 00:00:00','1.1.9','2018-02-22 00:00:00','2018-02-15 00:00:00','1.1.9.1'),
+    (262,'User Story',30,'Allow traffic tracking for the Wiki','Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas eget elit lobortis, viverra lorem et, elementum nibh. Aenean scelerisque nulla sed quam aliquam, ut volutpat eros lacinia. Phasellus fringilla lectus lectus, in eleifend nulla condimentum et. Donec feugiat ornare libero, ac laoreet ipsum tincidunt sit amet. Curabitur blandit scelerisque malesuada. Praesent quis tortor orci. Nullam vitae elementum orci. Aenean sodales leo turpis, at rhoncus lacus facilisis ut. Praesent a magna vitae magna suscipit aliquet. Cras quis nisi vitae neque tempus consectetur. Curabitur dolor velit, facilisis faucibus arcu nec, elementum tempus arcu. Donec non dui finibus, luctus neque vel, vehicula nulla. Sed feugiat est ligula, id luctus nunc convallis sit amet.','Development','2018-01-16 00:00:00','SupportSystem','Client2','2018-12-13 00:00:00','1.1.9','2018-02-22 00:00:00','2018-02-15 00:00:00','1.1.9.1'),
+    (263,'Task',NULL,' change colors ','In vehicula magna dignissim arcu laoreet imperdiet. Aenean bibendum et quam vitae finibus. Proin eu augue elit. Vestibulum iaculis libero est, at vulputate augue ultricies eu. Morbi ultrices viverra rhoncus. Integer eget urna vel dui tincidunt iaculis euismod nec metus. Phasellus ornare lectus quis quam porta, nec iaculis eros aliquam. Cras sed magna mollis risus tristique vulputate quis non dui. Proin sed facilisis enim. Pellentesque facilisis, felis et elementum ultricies, ex eros dignissim ipsum, et gravida dolor urna at tortor. Fusce tincidunt pulvinar nisl in consectetur. Mauris ac vulputate magna. Sed finibus at nisl pretium mollis. In neque nisl, varius egestas enim vel, maximus rhoncus metus.','Development','2018-01-16 00:00:00','SupportSystem','Client2','2018-12-14 00:00:00','1.1.9','2018-02-22 00:00:00','2018-02-15 00:00:00','1.1.9.1'),
+    (264,'Bug',30,'Fix Sitemap','Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas eget elit lobortis, viverra lorem et, elementum nibh. Aenean scelerisque nulla sed quam aliquam, ut volutpat eros lacinia. Phasellus fringilla lectus lectus, in eleifend nulla condimentum et. Donec feugiat ornare libero, ac laoreet ipsum tincidunt sit amet. Curabitur blandit scelerisque malesuada. Praesent quis tortor orci. Nullam vitae elementum orci. Aenean sodales leo turpis, at rhoncus lacus facilisis ut. Praesent a magna vitae magna suscipit aliquet. Cras quis nisi vitae neque tempus consectetur. Curabitur dolor velit, facilisis faucibus arcu nec, elementum tempus arcu. Donec non dui finibus, luctus neque vel, vehicula nulla. Sed feugiat est ligula, id luctus nunc convallis sit amet.','Support','2018-01-16 00:00:00','SupportSystem','Client1','2018-12-12 00:00:00','1.1.9','2018-02-22 00:00:00','2018-02-15 00:00:00','1.1.9.1'),
+    (265,'User Story',250,'SALES: develop a template','Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas eget elit lobortis, viverra lorem et, elementum nibh. Aenean scelerisque nulla sed quam aliquam, ut volutpat eros lacinia. Phasellus fringilla lectus lectus, in eleifend nulla condimentum et. Donec feugiat ornare libero, ac laoreet ipsum tincidunt sit amet. Curabitur blandit scelerisque malesuada. Praesent quis tortor orci. Nullam vitae elementum orci. Aenean sodales leo turpis, at rhoncus lacus facilisis ut. Praesent a magna vitae magna suscipit aliquet. Cras quis nisi vitae neque tempus consectetur. Curabitur dolor velit, facilisis faucibus arcu nec, elementum tempus arcu. Donec non dui finibus, luctus neque vel, vehicula nulla. Sed feugiat est ligula, id luctus nunc convallis sit amet.','Development','2018-01-16 00:00:00','TFS','HH',NULL,'1.1.9','2018-02-22 00:00:00','2018-02-15 00:00:00','1.1.9.1'),
+    (30,'Feature',NULL,'WebSite Analytics','Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas eget elit lobortis, viverra lorem et, elementum nibh. Aenean scelerisque nulla sed quam aliquam, ut volutpat eros lacinia. Phasellus fringilla lectus lectus, in eleifend nulla condimentum et. Donec feugiat ornare libero, ac laoreet ipsum tincidunt sit amet. Curabitur blandit scelerisque malesuada. Praesent quis tortor orci. Nullam vitae elementum orci. Aenean sodales leo turpis, at rhoncus lacus facilisis ut. Praesent a magna vitae magna suscipit aliquet. Cras quis nisi vitae neque tempus consectetur. Curabitur dolor velit, facilisis faucibus arcu nec, elementum tempus arcu. Donec non dui finibus, luctus neque vel, vehicula nulla. Sed feugiat est ligula, id luctus nunc convallis sit amet.','Development','2018-01-09 00:00:00','TFS','HH',NULL,'1.1.8',NULL,NULL,'1.1.8.2'),
+    (266,'User Story',NULL,'Get a Credit Card provider quick books','In vehicula magna dignissim arcu laoreet imperdiet. Aenean bibendum et quam vitae finibus. Proin eu augue elit. Vestibulum iaculis libero est, at vulputate augue ultricies eu. Morbi ultrices viverra rhoncus. Integer eget urna vel dui tincidunt iaculis euismod nec metus. Phasellus ornare lectus quis quam porta, nec iaculis eros aliquam. Cras sed magna mollis risus tristique vulputate quis non dui. Proin sed facilisis enim. Pellentesque facilisis, felis et elementum ultricies, ex eros dignissim ipsum, et gravida dolor urna at tortor. Fusce tincidunt pulvinar nisl in consectetur. Mauris ac vulputate magna. Sed finibus at nisl pretium mollis. In neque nisl, varius egestas enim vel, maximus rhoncus metus.','Development','2018-01-16 00:00:00','TFS','HH',NULL,'1.1.9','2018-02-22 00:00:00','2018-02-15 00:00:00','1.1.9.1'),
+    (267,'User Story',30,'Add Google Analytics Everywhere in the Wiki','Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas eget elit lobortis, viverra lorem et, elementum nibh. Aenean scelerisque nulla sed quam aliquam, ut volutpat eros lacinia. Phasellus fringilla lectus lectus, in eleifend nulla condimentum et. Donec feugiat ornare libero, ac laoreet ipsum tincidunt sit amet. Curabitur blandit scelerisque malesuada. Praesent quis tortor orci. Nullam vitae elementum orci. Aenean sodales leo turpis, at rhoncus lacus facilisis ut. Praesent a magna vitae magna suscipit aliquet. Cras quis nisi vitae neque tempus consectetur. Curabitur dolor velit, facilisis faucibus arcu nec, elementum tempus arcu. Donec non dui finibus, luctus neque vel, vehicula nulla. Sed feugiat est ligula, id luctus nunc convallis sit amet.','Development','2018-01-16 00:00:00','TFS','HH',NULL,'1.1.9','2018-02-22 00:00:00','2018-02-15 00:00:00','1.1.9.1'),
+    (268,'User Story',30,'Add the keywords everywhere in the wiki to move SEO up','Lorem','Development','2018-01-16 00:00:00','TFS','HH',NULL,'1.1.9','2018-02-22 00:00:00','2018-02-15 00:00:00','1.1.9.1'),
+    (269,'User Story',30,'Add interlinking between wiki and the site','Lorem','Support','2018-01-16 00:00:00','TFS','HH',NULL,'1.1.9','2018-02-22 00:00:00','2018-02-15 00:00:00','1.1.9.1'),
+    (270,'User Story',30,'Add Bing Analytics plugi','Ipsum','Support','2018-01-16 00:00:00','TFS','HH',NULL,'1.1.9','2018-02-22 00:00:00','2018-02-15 00:00:00','1.1.9.1');
+
+	SELECT * FROM TestingData;
+
+	SELECT Work_Item_Type FROM TestingData;
+	SELECT DISTINCT Work_Item_Type, software_Version FROM TestingData;
+	SELECT DISTINCT software_Version FROM TestingData;
+
+	
+
+UPDATE WorkItem
+SET Version_ID = 2
+WHERE WorkItem_ID >= 27 and WorkItem_ID < 257
+
+UPDATE WorkItem
+SET Version_ID = 3
+WHERE WorkItem_ID >= 259
+
+SELECT * FROM WorkItem;
+
+
+CREATE PROCEDURE `NovemberSummary`(IN `branch` VARCHAR(60), IN `year` INT) NOT 
+DETERMINISTIC CONTAINS SQL SQL SECURITY DEFINER 
+BEGIN
+SELECT 
+   ( select sum(sales.amount) from sales 
+     where month (sales.date)= 11 and sales.branch = branch ) as Sales ,
+   ( select sum(expenses.amount) from expenses 
+     where month(expenses.date)= 11 and expenses.branch = branch ) as Expenses 
+   ;
+END
